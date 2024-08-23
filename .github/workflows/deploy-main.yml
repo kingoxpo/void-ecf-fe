@@ -52,4 +52,4 @@ jobs:
           CF_DIST_ID: E1UQAIK0S7GT5M
           CF_ITEMS: /*
         run: |
-          aws cloudfront create-invalidation --distribution-id $CF_DIST_ID --paths $CF_ITEMS"
+          aws cloudfront create-invalidation --distribution-id $CF_DIST_ID --paths $CF_ITEMS
