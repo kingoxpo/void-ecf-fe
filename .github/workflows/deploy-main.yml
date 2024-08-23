@@ -1,0 +1,55 @@
+# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
+# For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
+
+name: Deploy Main
+
+on:
+  push:
+    branches: ['main']
+
+env:
+  NODE_VERSION: '20.16.0'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # git 소스 체크아웃
+      - name: git checkout
+        uses: actions/checkout@v3
+        
+      # node 버전 설정
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      # npm install 진행(모듈 설치)
+      - name: npm install
+        run: npm install
+        
+      # 리엑트 프로젝트 빌드
+      - name: npm build
+        run: npm run build
+        env:
+          CI: false
+          
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+  
+      # s3에 배포
+      - name: deploy s3
+        run: 
+          # sync : 변경된 파일만 / --delete : 원본경로에서 삭제시 타깃에서도 삭제
+          aws s3 sync --delete ./build s3://void-ecf-s3 --profile=soonbok
+
+      - name: Distribution AWS CloudFront
+        env:
+          CF_DIST_ID: E1UQAIK0S7GT5M
+          CF_ITEMS: /*
+        run: |
+          aws cloudfront create-invalidation --profile=soonbok --distribution-id $CF_DIST_ID --paths $CF_ITEMS"
