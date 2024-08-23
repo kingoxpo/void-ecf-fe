@@ -45,11 +45,11 @@ jobs:
       - name: deploy s3
         run: 
           # sync : 변경된 파일만 / --delete : 원본경로에서 삭제시 타깃에서도 삭제
-          aws s3 sync --delete ./build s3://void-ecf-s3 --profile=soonbok
+          aws s3 sync --delete ./build s3://void-ecf-s3
 
       - name: Distribution AWS CloudFront
         env:
           CF_DIST_ID: E1UQAIK0S7GT5M
           CF_ITEMS: /*
         run: |
-          aws cloudfront create-invalidation --profile=soonbok --distribution-id $CF_DIST_ID --paths $CF_ITEMS"
+          aws cloudfront create-invalidation --distribution-id $CF_DIST_ID --paths $CF_ITEMS"
