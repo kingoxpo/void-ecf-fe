@@ -23,7 +23,7 @@ const App = () => {
 
   return (
     <div>
-      <button onClick={handleAuth}>카페24 인증</button>
+      <button onClick={handleAuth}>Cafe24 인증</button>
       <button onClick={handleExcelUploadRedirect}>엑셀 업로드</button>
     </div>
   );

@@ -37,7 +37,7 @@ const ExcelUpload = () => {
 
   return (
     <div>
-      <h1>Excel Upload Page</h1>
+      <h1>엑셀 업로드 페이지</h1>
       <input type="file" accept=".xlsx, .xls, .csv" onChange={handleFileChange} />
       <button onClick={handleFileUpload}>Upload Excel</button>
     </div>
