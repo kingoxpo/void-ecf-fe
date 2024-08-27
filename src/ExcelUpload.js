@@ -30,9 +30,6 @@ const ExcelUpload = () => {
       console.error('Error uploading file:', error);
       alert('Error uploading file.');
     }
-
-    // Clear the file input
-    // setSelectedFile(null);
   };
 
   return (
